@@ -1,0 +1,145 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+{% block contentblock %}
+  <!--Main layout-->
+  <main style="padding-top:100px;">
+      <div class="card-body container">
+         <div class="row">
+             <div class="col-md-12 d-flex justify-content-between border-bottom mb-3">
+                <h2 class="pb-2 ">Địa chỉ của tôi</h2>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAddress" data-id="1">
+                  Thêm địa chỉ
+                  </button>
+             </div>
+         </div>
+          {% for add in address %}
+          <div class="row border-bottom  pl-4">
+            
+            <div class="col-md-2">
+                <h6 class="my-4">Họ và tên:</h6>
+                <h6 class="my-4">Số điện thoại: </h6>
+                <h6 class="my-4">Địa chỉ: </h6>
+            </div>
+            <div class="col-md-6 address_user">
+                <h6 class="my-4 name">Vũ Hồng Minh
+                    {% if add.default %} <span class="default_address">Mặc định</span>{%endif%}
+                </h6>
+                <h6 class="mb-4">0123456789 </h6>
+                <h6 class="my-4">{{add.address}}</h6>
+            </div>
+            <div class="col-md-4">
+                {% if add.default %}  <button class="btn" name="btn-default-address" data-id="{{add.id}}"  disabled>Thiết lập mặc định</button>{%else%}
+               <button class="btn" name="btn-default-address" data-id="{{add.id}}"  >Thiết lập mặc định</button>
+               {%endif%}
+               
+               <button type="button" class="btn btn-primary"
+                data-id="{{add.id}}"
+                data-street="{{add.street}}" 
+                data-apartment="{{add.apartment_number}}" 
+                data-district="{{add.district}}" 
+                data-city="{{add.city}}" 
+
+                data-toggle="modal" data-target="#editAddress" id="edit_address">
+                Sửa
+              </button>
+              <button onClick="confirm('Bạn có chắc chắn muốn xóa?')"data-id="{{add.id}}" class="btn btn-danger delete_address">Xóa</button>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- Thêm địa chỉ -->
+          <div class="modal fade" id="addAddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+             
+                 <div class="form-group">
+                   <label for="">Street</label>
+                   <input type="text"
+                     class="form-control" name="" id="street"  placeholder="" >
+                    
+                 </div>
+                 <div class="form-group">
+                   <label for="">Apartment</label>
+                   <input type="text"
+                     class="form-control" name="" id="apartment"  placeholder="">
+                  
+                 </div>
+                 <div class="form-group">
+                   <label for="">District</label>
+                   <input type="text"
+                     class="form-control" name="" id="district"  placeholder="">
+                  
+                 </div>
+                 <div class="form-group">
+                   <label for="">City</label>
+                   <input type="text"
+                     class="form-control" name="" id="city"  placeholder="">
+                  
+                 </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="add_address">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sửa địa chỉ -->
+          <div class="modal fade" id="editAddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+             
+                 <div class="form-group">
+                   <label for="">Street</label>
+                   <input type="text"
+                     class="form-control" name="" id="editstreet"  placeholder="" >
+                    
+                 </div>
+                 <div class="form-group">
+                   <label for="">Apartment</label>
+                   <input type="text"
+                     class="form-control" name="" id="editapartment"  placeholder="">
+                  
+                 </div>
+                 <div class="form-group">
+                   <label for="">District</label>
+                   <input type="text"
+                     class="form-control" name="" id="editdistrict"  placeholder="">
+                  
+                 </div>
+                 <div class="form-group">
+                   <label for="">City</label>
+                   <input type="text"
+                     class="form-control" name="" id="editcity"  placeholder="">
+                  
+                 </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" name="edit_address">Xác nhận</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      
+  </main>
+{%endblock%}
+
+  
+

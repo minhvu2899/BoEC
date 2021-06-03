@@ -1,0 +1,26 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+
+{% block contentblock %}
+  <!--Main layout-->
+  <main style="padding-top:100px;">
+      <div class="cart container-fluid">
+          <h2>Giỏ hàng</h2>
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-md-6 p-5">
+                    <img src="https://bizweb.dktcdn.net/100/411/922/themes/800986/assets/empty-cart.png?1607914671664" alt="">
+                   
+                </div>
+                <div class="col-md-3"> <a href="{%url 'product:index'%}" class="btn btn-danger" style="width: 200px;display: inline-block;">Mua ngay</a></div>
+            </div>
+
+      </div>
+      <!--Section: Products v.3-->
+      <!--Pagination-->
+      
+  </main>
+{%endblock%}
+
+  
+

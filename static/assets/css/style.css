@@ -1,0 +1,63 @@
+img {
+  width: 100%;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+}
+.currSign:before {
+  content: "₫";
+}
+.product_title {
+  font-size: 15px;
+  display: -webkit-box;
+  /* width: 20px; */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.product_title-checkout {
+  width: 80%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 20px;
+  text-align: left;
+}
+.address {
+  font-size: 20px;
+  font-weight: 400;
+}
+.product-img-md {
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+}
+.product-img-small {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+}
+img.avatar_comment {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: inline-block;
+}
+div.address_user .name {
+  padding-right: 15px;
+  display: inline-block;
+}
+.default_address {
+  padding: 3px 7px 2px;
+  background-color: #00bfa5;
+  border-radius: 3px;
+  color: white;
+}
+.rating span{
+    cursor: pointer;
+}
+.rating span.checked{
+    cursor: pointer;
+    color: orange;
+}

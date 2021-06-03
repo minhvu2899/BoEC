@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrapper{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .wrapper form{
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+        .helptext{
+            display: none;
+        }
+        .wrapper form input{
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            
+        }
+        .wrapper form input[type="submit"]{
+            background-color: rgb(41, 107, 47);
+            text-transform: uppercase;
+            color: white;
+            border-radius: 10px;
+            outline: none;
+        }
+        .wrapper table ul.errorlist{
+           color: red;  
+           display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Register</h1>
+    <form method="post">
+        <table>
+            {{ form.as_table }}
+          </table>
+        {% csrf_token %}
+        <input type="submit" value="Register">
+    </form>
+    <p>You have an account!<a href="{% url 'account:login'%}">Login now</a></p>
+    </div>
+</body>
+</html>

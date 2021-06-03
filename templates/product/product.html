@@ -1,0 +1,140 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+
+{% block contentblock %}
+  <!--Main layout-->
+  <main style="padding-top:50px;">
+      <div class="products container-fluid">
+          <div class="row">
+            <div class="col-md-3">
+
+                <h2 class="bg-danger border-info p-1">Danh mục sản phẩm</h2>
+               <!-- Example single danger button -->
+             
+               {%for category in categorys %}
+               {% if category.parent_id is None %}
+               
+              <ul class="border-bottom">
+                <li class=""><h4>{{category.title}}</h4>
+
+                  {%for category2 in categorys %}
+                  {% if category2.parent_id.title == category.title %}
+                    <ul>
+                      <li><a href="{% url 'product:category' category2.slug%}">{{category2.title}}</a></li>
+                    <!-- <a class="dropdown-item" href="#">{{category2.title}}</a> -->
+                    </ul> 
+                  {% endif %}
+                  {% endfor %}
+                </li>
+                   
+                    {% endif %}
+                  </ul>
+                    {% endfor %}
+                
+            </div>
+     
+            <div class="col-md-9">
+              <div class="filters">
+                <ul>
+                  <li class="active" data-filter="*">All Products</li>
+                  {%for category in categorys %}
+                    {% if category.parent_id is None %}
+                      <li data-filter={{category.title}}>{{category.title}}</li>
+                    {% endif %}
+                    {%endfor%}
+                </ul>
+              </div>
+              <div class="col-md-12">
+                <div class="filters-content">
+                    <div class="row grid">
+                        {% for item in page_obj %}
+                        <div class="col-lg-4 col-md-4 all dev d-flex" style="height: 500px;">
+                          <div class="product-item">
+                            <a href="{% url 'product:detail' item.id %}"><img src="{{item.thumbnail}}" alt="" style="display:block; width:100%;height: 50%;object-fit: cover;"></a>
+                            <div class="down-content">
+                              <a href="#"><h5 class="product_title">{{item.title}}</h5></a>
+                              <h5>{{item.sale_price}}</h5>
+                             
+                              <div>
+                                <a href="javascript:void(0)" name="addCart" class="btn btn-danger" data-id="{{item.id}}">Thêm vào giỏ</a>
+                                <a href="{% url 'product:detail' item.id %}" class="btn btn-danger btn-outline-danger">Xem chi tiết</a>
+                              </div>
+                            
+                              <ul class="stars">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                              </ul>
+                              <span>Reviews (12)</span>
+                            </div>
+                          </div>
+                        </div>
+                        {% endfor%}
+                  
+                       
+                    </div>
+                    <div class="col-md-12">
+                    
+                        <!-- {% if page_obj.has_previous %}
+                        <li>
+                          <a href="?page=1">&laquo; first</a>
+                          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        </li>
+                          {% endif %}
+                        <li>
+                          <a  class="current" href="#">{{ page_obj.number }}</a>
+                        </li>  -->
+                     
+                               
+                     
+                  
+                          <!-- {% if page_obj.has_next %}
+                              <a href="?page={{ page_obj.next_page_number }}">next</a>
+                              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                          {% endif %} -->
+                        <!-- <li class="active"><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#"></a></li> -->
+                      </ul>
+                      <div class="pages">
+                        <span class="step-links">
+                          <ul class="pages">
+                          {% if page_obj.has_previous %}
+                          <li>
+                            <a href="?page=1"><i class="fa fa-angle-double-left"></i></a>
+                          </li>
+                          <li><a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+                          {% endif %}
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if page_obj.has_next %}
+                                <li>
+                                  <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+                                </li>
+                                <li><a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa fa-angle-double-right"></i></a></li>
+                            {% endif %}
+                        </span>
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+         
+          
+          </div>
+        </div>
+      </div>
+      <!--Section: Products v.3-->
+      <!--Pagination-->
+      
+  </main>
+{%endblock%}
+
+  
+

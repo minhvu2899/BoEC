@@ -1,0 +1,32 @@
+
+<div id="list-example" class="list-group">
+  <h2>Danh mục sản phẩm</h2>
+  <ul class="navbar-nav mr-auto">
+    {% for category in categorys %}
+    <li class="nav-item ">
+      <a class="nav-link" >
+        <a href="{% url 'category' category.slug%}" class="list-group-item list-group-item-action" href="#list-item-1">{{category.title}}</a>
+      </a>
+    </li>
+    {%endfor%}
+   
+
+  </ul>
+ 
+ 
+</div>
+
+    <!-- Links -->
+    
+    <!-- Links -->
+
+    <!-- <form class="form-inline" method="POST" action="{% url 'search'%}">
+        {% csrf_token %}
+      <div class="md-form my-0">
+        <input name= "search" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-secondary" type="submit">Search</button>
+      
+      </div>
+    </form> -->
+ 
+<!--/.Navbar-->

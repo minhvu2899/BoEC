@@ -1,0 +1,62 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block contentblock %}
+  <!--Main layout-->
+  <main style="padding-top:100px;">
+      <div class="cart container-fluid">
+          <h2>Giỏ hàng</h2>
+          <div class="row mt-5 pl-4">
+              <div class="col-md-9 ">
+                  <div class="content  border p-5">
+                      {% for cartItem in list %}
+                      <div class="row mb-5">
+                          <div class="col-md-3">
+                              <img src="{{cartItem.item.thumbnail}}" alt="">
+                          </div>
+                          <div class="col-md-5">
+                              <h5>{{cartItem.item.title}}</h5>
+                              <div class="m-4">
+                                <a href="" name="delete_item" data-id="{{cartItem.id}}">Xóa khỏi giỏ hàng</a>
+                                
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <span>Price:</span><strong class="price-product">{{cartItem.item.sale_price}}</strong>
+                              <div class="my-3"><button data-id="{{cartItem.id}}" class="increase" type="button">+</button><input  class="text-center" type="text" name="quantity" id="{{cartItem.id}}" maxlength="2" size="1" value="{{cartItem.quantity}}" min=1 max=100><button data-id="{{cartItem.id}}" class="decrease">-</button>
+                              </div>
+                              <span>Total:</span><strong class="price-product">{{cartItem.item.sale_price|mul:cartItem.quantity}}</strong>
+                            </div>
+                      </div>
+                      {% endfor %}
+                
+                   
+                  </div>
+              </div>
+              <div class="col-md-3 border">
+                    <div class="total m-3">
+                        <div class="row py-4 border">
+                            <div class="col-md-12 d-flex justify-content-between">
+                                <strong>Tổng tiền</strong>
+                                <span class="price-product">{{total}}</span>
+                            </div>
+                        </div>
+                        <div class="row py-4 ">
+                            <div class="col-md-12 d-flex justify-content-between">
+                              <a href="{% url 'cart:checkout'%}" type="submit" class="btn btn-success">Tiến hành mua hàng</a>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+            </div>
+
+      </div>
+      <!--Section: Products v.3-->
+      <!--Pagination-->
+      
+  </main>
+{%endblock%}
+
+  
+

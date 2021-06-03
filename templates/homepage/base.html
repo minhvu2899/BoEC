@@ -1,0 +1,530 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Hệ thống BoEC </title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+  <!--
+
+TemplateMo 546 Sixteen Clothing
+
+https://templatemo.com/tm-546-sixteen-clothing
+
+-->
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/css/templatemo-sixteen.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/css/owl.css'%}">
+
+</head>
+
+
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="preloader">
+    <div class="jumper">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- Header -->
+  <!-- Banner Ends Here -->
+  {% include 'homepage/header.html' %}
+
+
+
+  {%block contentblock%}
+  {% endblock %}
+  {% include 'homepage/footer.html' %}
+
+
+
+
+  <!-- Bootstrap core JavaScript -->
+
+  <script src="{%static 'vendor/jquery/jquery.min.js'%}"></script>
+  <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+
+  <!-- Additional Scripts -->
+  <script src="{% static 'assets/js/custom.js'%}"></script>
+  <script src="{% static 'assets/js/owl.js'%}"></script>
+  <script src="{% static 'assets/js/slick.js'%}"></script>
+  <script src="{% static 'assets/js/isotope.js'%}"></script>
+  <script src="{% static 'assets/js/accordions.js'%}"></script>
+
+
+
+  <script language="text/Javascript">
+    cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+    function clearField(t) {                   //declaring the array outside of the
+      if (!cleared[t.id]) {                      // function makes it static and global
+        cleared[t.id] = 1;  // you could use true and false, but that's more typing
+        t.value = '';         // with more chance of typos
+        t.style.color = '#fff';
+      }
+    }
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('.status_order').click(function(){
+        status=  $(this).data('type')
+        $.post("{% url 'order:status'%}",
+          {
+            status:status,
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              // window.location = "{% url 'user:purchase'%}"
+              alert(data)
+            }
+          });
+      })
+      var shipping_id
+      var payment_id
+      var subtotal = $('#total').text();
+      var total
+      $('#shipping').change(function () {
+        shipping_id = $('#shipping').val()
+        var fee = $("#shipping option:selected").data('fee')
+
+        total = Number(subtotal) + Number(fee)
+        $('#total').html(total)
+        $('.shipping-fee').html(fee)
+      })
+      var btn_payment = $('button[name="payment_method"]')
+      btn_payment.click(function () {
+        btn_payment.removeClass('btn-outline-danger')
+        $(this).addClass("btn-outline-danger")
+        payment_id = $(this).data('id')
+        console.log(payment_id);
+      })
+      $('#order').click(function () {
+
+        $.post("/order/addOrder/",
+          {
+            shipping_id: shipping_id,
+            payment_id: payment_id,
+            total: total,
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              window.location = "{% url 'user:purchase'%}"
+            }
+          });
+      })
+
+
+      $('#total').html(total)
+      $('a[name="addCart"]').click(function () {
+        var id = $(this).data('id');
+        // alert(id);
+        var number = $('#product_number').val();
+        if (!number) {
+          number = 1;
+        }
+        $.post("/cart/addCart/",
+          {
+            product_id: id,
+            product_number: number,
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              alert("Thêm vào giỏ hàng thành công!");
+              alert(data)
+            }
+          });
+      })
+      //CSS Curency
+      let x = document.querySelectorAll(".price-product");
+      for (let i = 0, len = x.length; i < len; i++) {
+        let num = Number(x[i].innerHTML)
+          .toLocaleString('en');
+        x[i].innerHTML = num;
+        x[i].classList.add("currSign");
+      }
+      var quantity = $("input[name='quantity']")
+      console.log(quantity);
+      //Update Quantity Cart
+      $(".decrease").click(function () {
+        var input_el = $(this).data('id');
+        var v = $(`#${input_el}`).val() * 1 - 1;
+        if (v >= $(`#${input_el}`).attr('min'))
+          $(`#${input_el}`).val(v)
+        $.post("/cart/update/",
+          {
+            cart_id: input_el,
+            quantity: $(`#${input_el}`).val(),
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+
+              location.reload();
+            }
+          });
+      });
+
+
+      $(".increase").click(function () {
+        var input_el = $(this).data('id');
+        var v = $(`#${input_el}`).val() * 1 + 1;
+        $(`#${input_el}`).val(v)
+        if (v <= $(`#${input_el}`).attr('max'))
+          $(`#${input_el}`).val(v)
+        $.post("/cart/update/",
+          {
+            cart_id: input_el,
+            quantity: $(`#${input_el}`).val(),
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              location.reload();
+            }
+          });
+      });
+      quantity.change(function () {
+        alert();
+        $.post("/cart/update/",
+          {
+            cart_id: $(this).attr("id"),
+            quantity: $(this).val(),
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              location.reload();
+            }
+          });
+      })
+      var delete_item = $('a[name="delete_item"]')
+      delete_item.click(function (e) {
+        e.preventDefault();
+        alert($(this).data('id'))
+      })
+      //Address
+      var btn_default_address = $('button[name="btn-default-address"]');
+      btn_default_address.click(function () {
+        address_id = $(this).data('id');
+        $.post("/user/address/",
+          {
+            address_id: address_id,
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              alert("Thay doi thanh cong!");
+              location.reload();
+            }
+          });
+      })
+      //Modal add address
+      $('#addAddress').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('id') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+
+        $('#add_address').click(function () {
+          var street = $('#street').val();
+          var apartment = $('#apartment').val();
+          var district = $('#district').val();
+          var city = $('#city').val();
+          $.post("/user/address/add",
+            {
+              street: street,
+              apartment: apartment,
+              district: district,
+              city: city,
+              'csrfmiddlewaretoken': '{{csrf_token}}',
+            },
+            function (data, status) {
+              if (status == 'success') {
+                alert("Thay doi thanh cong!");
+                location.reload();
+              }
+            });
+
+        })
+        // alert(street)
+        // console.log(modal)
+
+        // modal.find('.modal-body input').val(recipient)
+      })
+      // Edit Address
+      var btnEditAddress = $('button[name="edit_address"]')
+      $('#editAddress').on('show.bs.modal', function (event) {
+
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('id') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var street = button.data('street')
+        var apartment = button.data('apartment')
+        var district = button.data('district')
+        var city = button.data('city')
+        var modal = $(this)
+        $('#editstreet').val(street);
+        $('#editapartment').val(apartment);
+        $('#editdistrict').val(district);
+        $('#editcity').val(city);
+
+
+        btnEditAddress.click(function () {
+          var street = $('#editstreet').val();
+          var apartment = $('#editapartment').val();
+          var district = $('#editdistrict').val();
+          var city = $('#editcity').val();
+          alert(street)
+          $.post("/user/address/edit/",
+            {
+              id: recipient,
+              street: street,
+              apartment: apartment,
+              district: district,
+              city: city,
+              'csrfmiddlewaretoken': '{{csrf_token}}',
+            },
+            function (data, status) {
+              if (status == 'success') {
+                alert(data);
+
+              }
+            });
+
+
+        })
+
+      })
+      //Xóa address
+      $('.delete_address').click(function () {
+        var id = $(this).data('id');
+        alert(id)
+        $.post("/user/address/delete/",
+          {
+            id: id,
+
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              alert(data);
+              location.reload()
+            }
+          });
+      })
+      $('#comment_product').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id_product = button.data('id') // Extract info from data-* attributes
+        var modal = $(this)
+        var img= button.data('img');
+        var title= button.data('title');
+        var id_order= button.data('order')
+        console.log(img);
+        
+        var html=`
+                <div class="row m-3 p-3 border text-center">
+                <div class="col-md-3">
+                       
+                  <img class="product-img-small" src="${img}" alt="">
+                </div>
+                  <div class="col-md-9 mb-3">
+                    <span class="product_title">${title}</span>
+                  </div>
+                </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="rating" data-id="">
+                        <span name="star" class="fa fa-star "></span>
+                        <span name="star" class="fa fa-star "></span>
+                        <span name="star" class="fa fa-star "></span>
+                        <span name="star" class="fa fa-star"></span>
+                        <span name="star" class="fa fa-star"></span>
+                      </div>
+                      <div class="form-group">
+                        <label for="">Comment</label>
+                        <textarea class="form-control comment"  id="" rows="3"></textarea>
+                      </div>
+                      <button type="submit" id="comment">submit</button>
+                    </div>
+                  </div>
+                 
+                </div>
+
+
+              `
+            $('.product_rating').html(html)
+            var rating = $(`span[name="star"]`)
+            console.log(rating);
+            rating.click(function () {
+            
+              l = rating.index(this)
+              console.log($(this));
+              if ($(this).hasClass('checked')) {
+                for (let index = l + 2; index <= 5; index++) {
+                  console.log(index, $(`span[name="star"]:nth-child(${index})`))
+                  $(`span[name="star"]:nth-child(${index})`).removeClass('checked')
+
+                }
+              }
+                else {
+                  for (let index = 1; index < l + 1; index++) {
+                  console.log(index, $(`span[name="star"]:nth-child(${index})`))
+
+                  $(`span[name="star"]:nth-child(${index})`).addClass('checked')
+
+
+                  }
+                  $(this).addClass('checked')
+                }
+                
+            })
+          
+            $('#comment').click(function(){
+              var score= $(`span[name="star"].checked`).length
+              var comment =$('.comment').val(); 
+              console.log(comment);
+              $.post("{% url 'user:comment' %}",
+              {
+                id_pro: id_product,
+                id_order: id_order,
+                score: score,
+                comment: comment,
+
+                'csrfmiddlewaretoken': '{{csrf_token}}',
+              },
+              function (data, status) {
+                if (status == 'success') {
+                  alert("Đánh giá thành công");
+                 location.reload()
+                
+                }
+              });
+            })
+        
+              
+             
+           
+       
+      })
+      $('#viewcomment').on('show.bs.modal', function (event) {
+
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('id') // Extract info from data-* attributes
+        var modal = $(this)
+        $.post("{% url 'order:getOrder'%}",
+          {
+            id: recipient,
+
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+            if (status == 'success') {
+              console.log(data);
+              var orders= data['o'];
+              var comments= data['c'];
+          
+              orders.forEach(o => {
+                comments.forEach(e => {
+                     if(e.product_id === o.product_id){
+                        e.product_name= o.product_name
+                        e.image =o.image
+                     }
+                    });
+              });
+              console.log(comments);
+              var html = ""
+              comments.forEach(d => {
+                var score =d.rating
+                var rating=""
+                for(var i=1;i<=5;i++){
+                  if(i<=score){
+                      rating+=` <span name="star" class="fa fa-star checked"></span>`
+                  }
+                  else{
+                    rating +=` <span name="star" class="fa fa-star "></span>`
+                  }
+                }
+                console.log(rating);
+                html += ` <form action="" method="post" class="border m-2 p-2">
+                          <div class="row  text-center">
+                                <div class="col-md-12 ">
+                                    <img class="product-img-small" src="${d.image}" alt="">
+                                    <span class="product_title-checkout">${d.product_name}</span>
+                                </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                  <div class="rating" data-id="">
+                                 ${rating}
+                              </div>
+                              <div class="form-group">
+                               
+                                <textarea class="form-control" name="" id="" rows="3" disabled>${d.comment}</textarea>
+                              </div>
+                                  </div>
+                                  </div>
+                               
+                               
+                            
+                              </div> 
+                            
+                                          
+                                        </form>`
+
+              });
+             
+            
+            
+            
+              $('.content_rating').html(html)
+            
+              
+             
+             
+
+              //   alert($('span[name="star"].checked').length)
+              // })
+            }
+          }, "JSON");
+        modal.find('.modal-title').text('Đánh giá order ' + recipient)
+
+      });
+
+    })
+
+  </script>
+
+</body>
+
+</html>
+
+</body>
+
+</html>

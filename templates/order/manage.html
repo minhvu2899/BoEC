@@ -1,0 +1,115 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+{% block contentblock %}
+<main style="padding-top:50px;">
+  <div class="container products">
+      <div class="row">
+          <div class="col-md-12">
+              <h3>Quản lí đơn đặt hàng</h3>
+
+          </div>
+      </div>
+      <div class="container mt-3">
+        <h2>Trạng thái đơn hàng</h2>
+        <br>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link status_order active" data-toggle="tab" href="#all" data-type="all">Tất cả</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link status_order " data-toggle="tab" href="#choxacnhan" data-type="1">Chờ xác nhận</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link status_order" data-toggle="tab" href="#dangxuli" data-type="2">Đang xử lí</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link status_order" data-toggle="tab" href="#danggiaohang" data-type="danggiaohang">Đang giao hàng</a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link status_order" data-toggle="tab" href="#dahoanthanh" data-type="3">Đã hoàn thành</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link status_order" data-toggle="tab" href="#dahuy" data-type="4">Đã hủy</a>
+          </li>
+        </ul>
+      
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div id="all" class="container tab-pane active"><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table container">
+                        <thead class="thead-light ">
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ tên</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Ảnh</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                          </thead>
+                    </table>
+                </div>
+            </div>
+            {%for or in orders%}
+      <div class="row m-3 p-3 border text-center">
+        {%for o in or.orderdetail_set.all%}
+            <div class="col-md-6 mb-3">
+                <img class="product-img-small" src="{{o.image}}" alt="">
+                <span class="product_title-checkout">{{o.product_name}}</span>
+            </div>
+            <div class="col-md-2">
+                <span>{{or.status}}</span>
+            </div>
+            <div class="col-md-2">
+                <span>{{o.quantity}}</span>
+            </div>
+            <div class="col-md-2">
+                <strong>{{or.total}}</strong>
+            </div>
+
+
+
+            {% endfor %}
+        </div>          
+        {%endfor%}             
+                          
+          </div>
+          <div id="1" class="container tab-pane fade"><br>
+            <h3>Menu 1</h3>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </div>
+          <div id="2" class="container tab-pane fade"><br>
+            <h3>Menu 2</h3>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+          </div>
+          <div id="3" class="container tab-pane fade"><br>
+            <h3>Menu 2</h3>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+          </div>
+          <div id="4" class="container tab-pane fade"><br>
+            <h3>Menu 2</h3>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+          </div>
+          <div id="5" class="container tab-pane fade"><br>
+            <h3>Menu 2</h3>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+          </div>
+        </div>
+      </div>
+      
+    
+    
+                        
+                        
+                      
+              </table>
+          </div>
+      </div>
+  </div> 
+</main>
+{%endblock%}
