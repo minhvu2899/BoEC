@@ -7,5 +7,6 @@ urlpatterns = [
     path('addOrder/',AddOrder.as_view(),name="addOrder"),
     path('getOrder/',GetRatingOrder.as_view(),name="getOrder"),
     path('manage/',OrderManage.as_view(),name="manage"),
-    path('status/',OrderStatus.as_view(),name="status"),
+    path('status/update/',UpdateStatus.as_view(),name="updateStatus"),
+    path('status/<int:type>',OrderStatus.as_view(),name="status"),
 ]

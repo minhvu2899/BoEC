@@ -25,8 +25,12 @@ class CartView(View):
                     # return HttpResponse(cartItems[0].total)
                     return render(request, "cart/cart.html",context)
             else:
-                return redirect('accoount:login')
-
+                return redirect('account:login')
+class deleteItem(View):
+    def post(self,request):
+        item =request.POST.get('cartItem')
+        CartItem.objects.get(pk=item).delete()
+        return HttpResponse(1)
 class AddCart(View):
     def post(seft,request):
         if(request.is_ajax()):
@@ -53,12 +57,9 @@ class CheckoutView(View):
         context={}
         if request.user.is_authenticated:
             cart=Cart.objects.get(user=CustomerUser.objects.get(id=request.user.id))
-            add= Address.objects.filter(user= request.user, default=True)
-            if add:
-                address= add.ToString()
-                add.address= address
-            else:
-                add ={}
+            add= Address.objects.get(user= request.user, default=True)
+            address= add.ToString()
+               
            
             ship=Shipping.objects.all()
             context['ship']= ship
@@ -72,7 +73,7 @@ class CheckoutView(View):
                     total = total+ int(cart.quantity)*int(cart.item.sale_price)
                 context['list'] =cartItems 
                 context['total']= total
-                context['address']= add
+                context['address']= address
             return render(request,"cart/checkout.html",context)
 
 class UpdateCart(View):

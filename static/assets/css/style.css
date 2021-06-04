@@ -4,9 +4,9 @@ img {
   height: 100%;
   object-fit: cover;
 }
-.currSign:before {
+/* .currSign:before {
   content: "₫";
-}
+} */
 .product_title {
   font-size: 15px;
   display: -webkit-box;

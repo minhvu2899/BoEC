@@ -6,7 +6,9 @@
       <div class="row">
           <div class="col-md-12">
               <h3>Quản lí đơn đặt hàng</h3>
-
+              <form  method="post" id="form_status">
+                  {%csrf_token%}
+              </form>  
           </div>
       </div>
       <div class="container mt-3">
@@ -15,23 +17,23 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link status_order active" data-toggle="tab" href="#all" data-type="all">Tất cả</a>
+            <a class="nav-link status_order {% if active == 0 %}active{%endif%}" data-toggle="tab" href="#all" data-type="all">Tất cả</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link status_order " data-toggle="tab" href="#choxacnhan" data-type="1">Chờ xác nhận</a>
+            <a class="nav-link status_order {% if active == 1 %}active{%endif%}" data-toggle="tab" href="#choxacnhan" data-type="1">Chờ xác nhận</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link status_order" data-toggle="tab" href="#dangxuli" data-type="2">Đang xử lí</a>
+            <a class="nav-link status_order {% if active == 2 %}active{%endif%}" data-toggle="tab" href="#dangxuli" data-type="2">Đang xử lí</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link status_order" data-toggle="tab" href="#danggiaohang" data-type="danggiaohang">Đang giao hàng</a>
+            <a class="nav-link status_order {% if active == 3 %}active{%endif%}" data-toggle="tab" href="#danggiaohang" data-type="3">Đã chuyển cho đơn vị vận chuyển</a>
           </li>
          
-          <li class="nav-item">
-            <a class="nav-link status_order" data-toggle="tab" href="#dahoanthanh" data-type="3">Đã hoàn thành</a>
+          <li class="nav-item ">
+            <a class="nav-link status_order {% if active == 4 %}active{%endif%}" data-toggle="tab" href="#dahoanthanh" data-type="4">Đã hoàn thành</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link status_order" data-toggle="tab" href="#dahuy" data-type="4">Đã hủy</a>
+            <a class="nav-link status_order {% if active == 5 %}active{%endif%}" data-toggle="tab" href="#dahuy" data-type="5">Đã hủy</a>
           </li>
         </ul>
       
@@ -44,42 +46,94 @@
                         <thead class="thead-light ">
                             <tr>
                                 <th>ID</th>
-                                <th>Họ tên</th>
-                                <th>Sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Ảnh</th>
+                               
+                                <th style="width:494px" class="text-center">Sản phẩm</th>
+                               
+                                
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
                           </thead>
                     </table>
                 </div>
             </div>
             {%for or in orders%}
-      <div class="row m-3 p-3 border text-center">
-        {%for o in or.orderdetail_set.all%}
+            <div class="row m-3 p-3 border text-center d-flex align-items-center">
+                {%for o in or.orderdetail_set.all%}
             <div class="col-md-6 mb-3">
                 <img class="product-img-small" src="{{o.image}}" alt="">
                 <span class="product_title-checkout">{{o.product_name}}</span>
             </div>
+            
             <div class="col-md-2">
-                <span>{{or.status}}</span>
+                <span>{{or.total}}</span>
             </div>
             <div class="col-md-2">
-                <span>{{o.quantity}}</span>
+               
+                {% if or.status == 1 %}
+                <span>Chờ xác nhận</span>
+                {%elif or.status == 2 %}
+                <span>Đang xử lí</span>
+                {%elif or.status == 3 %}
+                <span>Đang giao hàng</span>
+                {%elif or.status == 4 %}
+                <span>Đang hoàn thành</span>
+                {%elif or.status == 5 %}
+                <span>Đang hủy</span>
+                {% endif %}
+                <!-- {{or.status}} -->
             </div>
-            <div class="col-md-2">
-                <strong>{{or.total}}</strong>
-            </div>
-
-
-
             {% endfor %}
+            <div class="col-md-2 ">
+               
+                {% if or.status == 1 %}
+                <form action="{% url 'order:updateStatus'%}" method="post">
+                  <input type="hidden"  name="orderid" value="{{or.id}}">
+                  <input type="hidden"  name="type" value="{{or.status}}">
+                  <button type="submit">Xác nhận</button>
+                  {% csrf_token%}
+                </form>
+                {%elif or.status == 2 %}
+                <form action="{% url 'order:updateStatus'%}" method="post">
+                  <input type="hidden"  name="orderid" value="{{or.id}}">
+                  <input type="hidden"  name="type" value="{{or.status}}">
+                  <button type="submit">Đóng gói xong</button>
+                  {% csrf_token%}
+                </form>
+                {%elif or.status == 3 %}
+                <form action="{% url 'order:updateStatus'%}" method="post">
+                  <input type="hidden"  name="orderid" value="{{or.id}}">
+                  <input type="hidden"  name="type" value="{{or.status}}">
+                  <button type="submit">Đã giao</button>
+                  {% csrf_token%}
+                </form>
+                {%elif or.status == 4 %}
+                <form action="{% url 'order:updateStatus'%}" method="post">
+                  <input type="hidden"  name="orderid" value="{{or.id}}">
+                  <input type="hidden"  name="type" value="{{or.status}}">
+                  <button type="submit">Kết thúc</button>
+                  {% csrf_token%}
+                </form>
+                {%elif or.status == 5 %}
+                <form action="{% url 'order:updateStatus'%}" method="post">
+                  <input type="hidden"  name="orderid" value="{{or.id}}">
+                  <input type="hidden"  name="type" value="{{or.status}}">
+                  <button type="submit">Xác nhận hủy</button>
+                  {% csrf_token%}
+                </form>
+                {% endif %}
+                <!-- {{or.status}} -->
+            </div>
+
+
+
+          
         </div>          
         {%endfor%}             
                           
           </div>
-          <div id="1" class="container tab-pane fade"><br>
+          <!-- <div id="1" class="container tab-pane fade"><br>
             <h3>Menu 1</h3>
             <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </div>
@@ -97,7 +151,7 @@
           </div>
           <div id="5" class="container tab-pane fade"><br>
             <h3>Menu 2</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p> -->
           </div>
         </div>
       </div>

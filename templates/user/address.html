@@ -43,7 +43,12 @@
                 data-toggle="modal" data-target="#editAddress" id="edit_address">
                 Sửa
               </button>
-              <button onClick="confirm('Bạn có chắc chắn muốn xóa?')"data-id="{{add.id}}" class="btn btn-danger delete_address">Xóa</button>
+              <form action="/user/address/delete/" method="post">
+                <input type="hidden" name="id" value="{{add.id}}">
+                <button onClick="confirm('Bạn có chắc chắn muốn xóa?')"  class="btn btn-danger " type="submit">Xóa</button>
+                {%csrf_token%}
+              </form>
+            
             </div>
           </div>
           {% endfor %}
@@ -103,7 +108,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-             
+                  <form action=""> 
                  <div class="form-group">
                    <label for="">Street</label>
                    <input type="text"
@@ -128,6 +133,7 @@
                      class="form-control" name="" id="editcity"  placeholder="">
                   
                  </div>
+                </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

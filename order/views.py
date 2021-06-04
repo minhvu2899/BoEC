@@ -23,10 +23,10 @@ class AddOrder(View):
             shipping_address = address_user.street +',' +  address_user.apartment_number+','+ address_user.district+ ','+address_user.city
             order =Order.objects.create(user=request.user,cart= cart,shipping_address=shipping_address,ship=ship, paymentMethod=pay,total=total)
             for item in cartItem:
-                OrderDetail.objects.create(order= order, product= item.item,quantity= item.quantity,price=item.item.sale_price)
+                OrderDetail.objects.create(order= order, product= item.item,product_name=item.title, image =item.thumbnail,quantity= item.quantity,price=item.item.sale_price)
                 # HttpResponse(item.item.sale_price)
             cart.cartitem_set.all().delete()    
-        return HttpResponse(1)
+            return HttpResponse(1)
 class GetRatingOrder(View):
     def get(self,request):
         if request.user.is_authenticated:
@@ -59,14 +59,48 @@ class OrderManage(View):
         context['orders']= orders
         return render(request,"order/manage.html",context)
 class OrderStatus(View):
-    def get(seft,request):
-        orders =Order.objects.all()
+    def get(seft,request,type):
+        status =type
+        if status==0:
+            order = Order.objects.all()
+            count = order.count()
+        else:
+            order = Order.objects.filter(status=status)
+            count = order.count()
+        
+       
         context={}
-        context['orders']= orders
+        context['orders']=order
+        context['active'] =status    
+        context['count']=count
+       
         return render(request,"order/manage.html",context)
+    def post(seft,request,type):
+        status =type
+        count={}
+        if status==0:
+            order = Order.objects.all()
+            count = order.count()
+        else:
+            order = Order.objects.filter(status=status)
+            count = order.count()
+        
+
+        context={}
+        context['orders']=order
+        context['active'] =status    
+        context['count']=count
+        return render(request,"order/manage.html",context)
+        # return JsonResponse(order,safe=False)
+class UpdateStatus(View):
+    def get(seft,request,order,type):
+        Order.objects.filter()
+        return HttpResponse(1)
     def post(seft,request):
-        status =request.POST.get('id')
-        orders =Order.objects.all()
-        context={}
-        context['orders']= orders
-        return render(request,"order/manage.html",context)
+        order = request.POST.get('orderid')
+        type = request.POST.get('type')
+        type1= int(type)+1
+        Order.objects.filter(pk=order,status=int(type)).update(status=type1)
+        # return HttpResponse(order)
+        return HttpResponseRedirect(seft.request.META.get('HTTP_REFERER'))
+      

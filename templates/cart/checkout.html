@@ -7,6 +7,7 @@
 <main style="padding-top:100px;">
     <div class="cart container-fluid">
         <h2 class="ml-2">Thanh toán</h2>
+      
         <div class="row m-3 border">
             <div class="col-12">
                 <h5 class="text-danger">Địa chỉ nhận hàng</h5>
@@ -17,7 +18,7 @@
                             <strong>{{user.phone_number}}</strong>
                         </div>
                         <div class="col-md-7">
-                            <p class="address">{{address.address}}</p>
+                            <p class="address" name="address">{{address}}</p>
                         </div>
                         <div class="col-md-2 text-center">
                             <button>Thay đổi</button>
@@ -128,9 +129,11 @@
            
             <div class="col-md-3 text-center text-danger">
               <button class="btn btn-danger w-100" id="order">Đặt hàng</button>
+              <!-- <button class="btn btn-danger w-100" type="submit">Đặt hàng</button> -->
             </div>
         </div>
-        
+
+    
     </div>
 
 

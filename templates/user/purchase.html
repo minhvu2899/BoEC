@@ -8,7 +8,7 @@
   <div class="cart container-fluid">
     <h2>Đơn hàng</h2>
     <div class="row mt-5 pl-4">
-      <div class="col-md-3 border bg-dark">
+      <div class="col-md-3 border bg-light">
         <div class="total m-3">
           <div class="row py-4 border">
             <div class="col-md-12 d-flex justify-content-between">
@@ -17,8 +17,20 @@
             </div>
           </div>
           <div class="row py-4 ">
-            <div class="col-md-12 d-flex justify-content-between">
-              <a href="{% url 'cart:checkout'%}" type="submit" class="btn btn-success">Tài khoản của tôi</a>
+            <div class="col-md-12 ">
+              <h4>
+                <a href="" type="submit" class="btn">Tài khoản của tôi</a>
+              </h4>
+              <h4>
+                <a href="{% url 'user:address'%}" type="submit" class="btn">Địa chỉ</a>
+              </h4>
+              <h4>
+                <a href="{% url 'user:purchase'%}" type="submit" class="btn">Đơn mua</a>
+              </h4>
+                
+             
+             
+             
             </div>
           </div>
         </div>
@@ -26,6 +38,11 @@
       <div class="col-md-9 ">
         <div class="content bg-light  p-2">
           {% for ord in order %}
+          <div class="row">
+            <div class="col-md-12">
+              {{or.status}}
+            </div>
+          </div>
           <div class="row mb-3 border d-flex align-items-center">
             {%for item in ord.orderdetail_set.all %}
             <div class="col-md-7">

@@ -64,7 +64,7 @@ class Delete_Address(View):
         id= request.POST.get('id')
         add =Address.objects.get(pk=id)
         add.delete()
-        return HttpResponse(1)
+        return redirect("user:address")
         
 class CommentProduct(View):
     def post(seft,request):

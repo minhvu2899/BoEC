@@ -90,17 +90,17 @@ https://templatemo.com/tm-546-sixteen-clothing
     $(document).ready(function () {
       $('.status_order').click(function(){
         status=  $(this).data('type')
-        $.post("{% url 'order:status'%}",
-          {
-            status:status,
-            'csrfmiddlewaretoken': '{{csrf_token}}',
-          },
-          function (data, status) {
-            if (status == 'success') {
-              // window.location = "{% url 'user:purchase'%}"
-              alert(data)
-            }
-          });
+        form =$('#form_status');
+        if(status=="all"){
+          var url =`/order/status/0`
+        }
+        else{
+          var url =`/order/status/${status}`
+        }
+        form.attr('action',url)
+        form.submit()
+        console.log(form)
+      
       })
       var shipping_id
       var payment_id
@@ -155,7 +155,7 @@ https://templatemo.com/tm-546-sixteen-clothing
           function (data, status) {
             if (status == 'success') {
               alert("Thêm vào giỏ hàng thành công!");
-              alert(data)
+              
             }
           });
       })
@@ -169,6 +169,22 @@ https://templatemo.com/tm-546-sixteen-clothing
       }
       var quantity = $("input[name='quantity']")
       console.log(quantity);
+      //delete item
+      var delete_item = $('button[name="delete_item"]')
+      delete_item.click(function (e) {
+        console.log($(this));
+        $.post("/cart/delete/",
+          {
+            cartItem: $(this).data("id"),
+          
+            'csrfmiddlewaretoken': '{{csrf_token}}',
+          },
+          function (data, status) {
+
+             location.reload();
+            
+          });
+      })
       //Update Quantity Cart
       $(".decrease").click(function () {
         var input_el = $(this).data('id');
@@ -313,7 +329,7 @@ https://templatemo.com/tm-546-sixteen-clothing
             },
             function (data, status) {
               if (status == 'success') {
-                alert(data);
+                location.reload();
 
               }
             });
@@ -323,22 +339,7 @@ https://templatemo.com/tm-546-sixteen-clothing
 
       })
       //Xóa address
-      $('.delete_address').click(function () {
-        var id = $(this).data('id');
-        alert(id)
-        $.post("/user/address/delete/",
-          {
-            id: id,
-
-            'csrfmiddlewaretoken': '{{csrf_token}}',
-          },
-          function (data, status) {
-            if (status == 'success') {
-              alert(data);
-              location.reload()
-            }
-          });
-      })
+     
       $('#comment_product').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var id_product = button.data('id') // Extract info from data-* attributes

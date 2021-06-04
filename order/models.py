@@ -4,12 +4,11 @@ from user.models import CustomerUser
 from product.models import Product
 # Create your models here.
 STATUS = [
-    ('Chờ xác nhận', 'Chờ xác nhận'),
-    ('Chờ lấy hàng', 'Chờ lấy hàng'),
-    ('Đang vận chuyển', 'Đang vận chuyển'),
-    ('Đang giao hàng', 'Đang giao hàng'),
-    ('Đã hoàn thành', 'Đã hoàn thành'),
-    ('Đã hủy', 'Đã hủy'),
+    (1, 'Chờ xác nhận'),
+    (2, 'Đang xử lí'),
+    (3, 'Đang giao hàng'),
+    (4, 'Đã hoàn thành'),
+    (5, 'Đã hủy'),
 ]    
 class Shipping(models.Model):
     title = models.CharField(max_length=255)
@@ -28,8 +27,8 @@ class Order(models.Model):
     ship = models.ForeignKey(Shipping,on_delete=models.CASCADE,null=True,blank=True)
     paymentMethod = models.ForeignKey(Payment,on_delete=models.CASCADE,null=True,blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(
-        max_length=20,
+    status = models.IntegerField(
+      
         choices=STATUS,
         default=STATUS[0],
     )
