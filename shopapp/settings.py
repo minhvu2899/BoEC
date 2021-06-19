@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'product',
     'Account',
     'core',
-    'mathfilters',
+    
     
 ]
 
