@@ -33,24 +33,30 @@ class deleteItem(View):
         return HttpResponse(1)
 class AddCart(View):
     def post(seft,request):
-        if(request.is_ajax()):
-            product_id = request.POST.get('product_id')
-            product_number = request.POST.get('product_number')
-            if(request.user.id is not None):
-                cart=Cart.objects.get(user=CustomerUser.objects.get(id=request.user.id))
-                if(not cart):
-                    cart=Cart.objects.create(user=CustomerUser.objects.get(id=request.user.id))
-                    return HttpResponse(cart)
+        product_id = request.POST.get('product_id')
+        product_number = request.POST.get('product_number')
+        # return HttpResponse(product_number)
+        if request.user.is_authenticated:
+            cart=Cart.objects.filter(user=request.user)
+            pro=Product.objects.get(id=product_id)    
+           
+            if(cart.count()==0):
+                cart1=Cart.objects.create(user=request.user)
+                CartItem.objects.create(cart= cart1,item= pro,quantity=product_number)
+                return HttpResponse(cart)
+            else:
+                cart=Cart.objects.get(user=request.user)
+                item= CartItem.objects.filter(item=pro,cart=cart)
+                if item:
+                    item= CartItem.objects.get(item=pro,cart=cart)
+                    item.quantity = int(item.quantity) + int(product_number)
+                    item.save()
+                    return HttpResponse(item)
                 else:
-
-                    pro=Product.objects.get(pk=product_id)
-                    item= CartItem.objects.filter(item=pro,cart=cart)
-                    if(not item):
-                        CartItem.objects.create(cart= cart,item= pro,quantity= product_number)
-                    else:
-                       item.quantity =int(item.quantity) + int(product_number)
-                       item.save()
-                return HttpResponse(item)
+                    x= CartItem.objects.create(cart= cart,item= pro,quantity=product_number)
+                    return HttpResponse(x)
+        else:
+            return HttpResponse("login")
                    
 class CheckoutView(View):
     def get(seft,request):
