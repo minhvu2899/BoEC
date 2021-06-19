@@ -135,10 +135,7 @@ https://templatemo.com/tm-546-sixteen-clothing
           function (data, status) {
             if (status == 'success') {
               
-              setTimeout( async () => {
-                await swal("Đặt hàng thành công!", "Thank you!", "success");
-                window.location = "{% url 'user:purchase'%}"
-              }, 1000);
+              alert("Đặt hàng thành công")
             }
           });
       })
@@ -161,10 +158,7 @@ https://templatemo.com/tm-546-sixteen-clothing
           function (data, status) {
             if (data == 'login') {
            
-              setTimeout(async() => {
-                await swal("Vui lòng đăng nhập!", "Thank you!", "error");
-                window.location = "{% url 'account:login'%}"
-              }, 1000);
+              alert("Đăng nhập")
             }
             else{
               // alert("Thêm vào giỏ hàng thành công!");
@@ -268,7 +262,7 @@ https://templatemo.com/tm-546-sixteen-clothing
           },
           function (data, status) {
             if (status == 'success') {
-              swal("Good job!", "Thay đổi thành công!", "success");
+              alert('Thay đoi thanh cong')
               location.reload();
             }
           });
@@ -296,7 +290,7 @@ https://templatemo.com/tm-546-sixteen-clothing
             },
             function (data, status) {
               if (status == 'success') {
-                swal("Good job!", "Thêm thành công!", "success");
+                alert('Them thanh cong')
                 location.reload();
               }
             });
@@ -448,8 +442,7 @@ https://templatemo.com/tm-546-sixteen-clothing
               },
               function (data, status) {
                 if (status == 'success') {
-                swal("Good job!", "Đánh giá thành công!", "success");
-                 location.reload()
+                  alert('Danh gia thanh cong')
                 
                 }
               });
