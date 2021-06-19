@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 class Category(models.Model):
     title = models.CharField(default='',max_length=100)
@@ -19,8 +18,17 @@ class Product(models.Model):
     sale_price=models.IntegerField(default=0,null=True,blank=True)
     inventory=models.IntegerField(default=0,null=True,blank=True)
     thumbnail = models.CharField(default='',max_length=255,null=True)
+  
     active= models.BooleanField(default=True)
     def __str__(self):
         return "%s %s" %(self.title,self.category)
     def formatPrice(self):
         return "₫{:,.0f}".format(self.sale_price)
+
+class ProductOption(models.Model):
+    name_option = models.CharField(default='',max_length=100)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+
+class ProductOptionValue(models.Model):
+    name_option = models.CharField(default='',max_length=100)
+    product_option = models.ForeignKey(ProductOption,on_delete=models.CASCADE)

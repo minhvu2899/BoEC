@@ -26,6 +26,15 @@
             fugit consequatur debitis quod eligendi inventore. Quam, corporis!</p>
           <span class="my-3">Số lượng: </span> <input type="number" min="1" value="1" id="product_number">
           <div class="my-3"><span>Giá: </span><strong>{{list.sale_price}}</strong></div>
+         
+          <div>
+            {% for option in list.productoption_set.all %}
+            <span>{{option.name_option}}</span>
+            {% for value in option.productoptionvalue_set.all %}
+            <button>{{value.name_option}}</button>
+            {%endfor%}
+            {%endfor%}
+          </div>
           <div class="my-3">
             <a href="#" class="btn btn-danger btn-outline-danger" name="addCart" data-id="{{list.id}}">Thêm vào giỏ
               hàng</a>
@@ -60,13 +69,13 @@
           </div>
          </div>
       </div>
-      <div class="col-md-6">
-        <p>{{cm.comment}}</p>
-        <span>Nhận xét vào: {{cm.create_at}}</span>
+      <div class="col-md-6 h-50">
+        <p style="font-size:20px">{{cm.comment}}</p>
+        <small>Nhận xét vào: {{cm.create_at}}</small>
       </div>
     </div>
     {% endfor%}
-  <div class="row mt-3 py-2 border-bottom border-top">
+  <!-- <div class="row mt-3 py-2 border-bottom border-top">
     <div class="col-md-3 d-flex">
       <img
         src="https://images.unsplash.com/photo-1523215108660-3fdf7932d7a5?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=745&q=80"
@@ -86,7 +95,7 @@
       <p>Lorem ipsum dolor sit am Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit corporis eligendi nulla beatae tempore quasi non iste! Magni, cumque modi molestiae inventore suscipit tempore. Minima earum sed aperiam dolorem? Iusto?</p>
       <span>Nhận xét vào: 09/04/2021</span>
     </div>
-  </div>
+  </div> -->
   </div>
 </main>
 {%endblock%}

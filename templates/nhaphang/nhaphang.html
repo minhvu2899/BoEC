@@ -1,0 +1,70 @@
+{%extends 'nhaphang/kho.html'%}
+{%block insideblock%}
+
+<div class="container">
+    <h2 style="margin-top: 15px;">Hóa Đơn Nhập Hàng</h2>
+   
+    <form action="{% url 'nhaphang:nhap'%}" method="POST" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="category">Loại sản phẩm:</label>
+            <select class="form-control" id="category" name="category">
+                {%for item in cate%}
+                <option>{{item.title}}</option>
+                {%endfor%}
+            </select>
+            <div class="valid-feedback">Ok.</div>
+            <div class="invalid-feedback">Please select one.</div>
+        </div>
+        <div class="form-group">
+            <label for="pname">Tên sản phẩm:</label>
+            <input type="text" class="form-control" id="pname" placeholder="Nhập tên sản phẩm" name="pname" required>
+            <div class="valid-feedback">Ok.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <div class="form-group">
+            <label for="price">Giá nhập (.đ):</label>
+            <input type="text" class="form-control" id="price" placeholder="Giá sản phẩm" name="price" required>
+            <div class="valid-feedback">Ok.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả:</label>
+            <input class="form-control" type="text" id ="description" placeholder ="Mô tả" style="width: 500px;height:100px;" name="description" required>
+            <div class="valid-feedback">Ok.</div>
+            <div class="invalid-feedback">Check this checkbox to continue.</div>
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="number">Số lượng:</label>
+            <input type="text" class="form-control" id="number" placeholder="Số lượng" name="number" required>
+            <div class="valid-feedback">Ok.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Xác nhận</button>
+        </form>
+    </div>
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                else {
+                    alert("Thêm đơn thành công!");
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+        </script>
+  {%endblock%}

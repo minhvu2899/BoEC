@@ -30,7 +30,7 @@ class Order(models.Model):
     status = models.IntegerField(
       
         choices=STATUS,
-        default=STATUS[0],
+        default=1,
     )
     is_complete =models.BooleanField(default=False)
 

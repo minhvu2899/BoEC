@@ -32,9 +32,9 @@
           <li class="nav-item ">
             <a class="nav-link status_order {% if active == 4 %}active{%endif%}" data-toggle="tab" href="#dahoanthanh" data-type="4">Đã hoàn thành</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link status_order {% if active == 5 %}active{%endif%}" data-toggle="tab" href="#dahuy" data-type="5">Đã hủy</a>
-          </li>
+          </li> -->
         </ul>
       
         <!-- Tab panes -->
@@ -59,7 +59,9 @@
                 </div>
             </div>
             {%for or in orders%}
+            <strong class="pl-4">{{or.user.first_name}} {{or.user.last_name}} - {{or.shipping_address}}</strong>
             <div class="row m-3 p-3 border text-center d-flex align-items-center">
+              
                 {%for o in or.orderdetail_set.all%}
             <div class="col-md-6 mb-3">
                 <img class="product-img-small" src="{{o.image}}" alt="">
@@ -71,17 +73,17 @@
             </div>
             <div class="col-md-2">
                
-                {% if or.status == 1 %}
-                <span>Chờ xác nhận</span>
-                {%elif or.status == 2 %}
-                <span>Đang xử lí</span>
-                {%elif or.status == 3 %}
-                <span>Đang giao hàng</span>
-                {%elif or.status == 4 %}
-                <span>Đang hoàn thành</span>
-                {%elif or.status == 5 %}
-                <span>Đang hủy</span>
-                {% endif %}
+              {% if or.status == 1 %}
+              <span class="badge badge-pill badge-danger">Chờ xác nhận</span>
+              {%elif or.status == 2 %}
+              <span class="badge badge-pill badge-warning">Đang xử lí</span>
+              {%elif or.status == 3 %}
+              <span class="badge badge-pill badge-info">Đang giao hàng</span>
+              {%elif or.status == 4 %}
+              <span class="badge badge-pill badge-success">Đã hoàn thành</span>
+              {%elif or.status == 5 %}
+              <span class="badge badge-pill badge-primary">Đã hủy</span>
+              {% endif %}
                 <!-- {{or.status}} -->
             </div>
             {% endfor %}
@@ -91,30 +93,30 @@
                 <form action="{% url 'order:updateStatus'%}" method="post">
                   <input type="hidden"  name="orderid" value="{{or.id}}">
                   <input type="hidden"  name="type" value="{{or.status}}">
-                  <button type="submit">Xác nhận</button>
+                  <button type="submit" class="btn btn-warning">Xác nhận</button>
                   {% csrf_token%}
                 </form>
                 {%elif or.status == 2 %}
                 <form action="{% url 'order:updateStatus'%}" method="post">
                   <input type="hidden"  name="orderid" value="{{or.id}}">
                   <input type="hidden"  name="type" value="{{or.status}}">
-                  <button type="submit">Đóng gói xong</button>
+                  <button type="submit" class="btn btn-info">Đóng gói xong</button>
                   {% csrf_token%}
                 </form>
                 {%elif or.status == 3 %}
                 <form action="{% url 'order:updateStatus'%}" method="post">
                   <input type="hidden"  name="orderid" value="{{or.id}}">
                   <input type="hidden"  name="type" value="{{or.status}}">
-                  <button type="submit">Đã giao</button>
+                  <button type="submit" class="btn btn-success">Đã giao</button>
                   {% csrf_token%}
                 </form>
                 {%elif or.status == 4 %}
-                <form action="{% url 'order:updateStatus'%}" method="post">
+                <!-- <form action="{% url 'order:updateStatus'%}" method="post">
                   <input type="hidden"  name="orderid" value="{{or.id}}">
                   <input type="hidden"  name="type" value="{{or.status}}">
                   <button type="submit">Kết thúc</button>
                   {% csrf_token%}
-                </form>
+                </form> -->
                 {%elif or.status == 5 %}
                 <form action="{% url 'order:updateStatus'%}" method="post">
                   <input type="hidden"  name="orderid" value="{{or.id}}">

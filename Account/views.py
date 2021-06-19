@@ -34,9 +34,7 @@ def login(request):
             if user is None:
                 return HttpResponse("Tai khoan khong ton tai")
             logins(request,user)
-          
-           
-            return redirect('account:home')
+            return redirect('core:index')
     else:
         form=AuthenticationForm() 
     return render(request,"Account/login.html",{"form":form})

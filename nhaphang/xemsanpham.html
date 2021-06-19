@@ -1,0 +1,52 @@
+{%extends 'nhaphang/kho.html'%}
+{%block insideblock %}
+<div class="container">
+    <h2 style="margin-top: 15px;">Sản phẩm hiện tại trong kho</h2>
+    <p>The .table-hover class enables a hover state (grey background on mouse over) on table rows:</p>            
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Sale Price</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for item in page_obj%}
+        <tr>
+          <td>{{item.title}}</td>
+          <td>{{item.desc}}</td>
+          <td>{{item.category}}</td>
+          <td>{{item.price}}</td>
+          <td>{{item.sale_price}}</td>
+          <td>{{item.inventory}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+    <div class="pages text-center">
+      <span class="step-links">
+        <ul class="pages">
+        {% if page_obj.has_previous %}
+        <li>
+          <a href="?page=1"><i class="fa fa-angle-double-left"></i></a>
+        </li>
+        <li><a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+        {% endif %}
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+  
+          {% if page_obj.has_next %}
+              <li>
+                <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+              </li>
+              <li><a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa fa-angle-double-right"></i></a></li>
+          {% endif %}
+      </span>
+    </div>
+    {%endblock%}

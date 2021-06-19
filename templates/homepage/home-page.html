@@ -21,17 +21,22 @@
             <div class="col-md-12">
               <div class="section-heading">
                 <h2>Latest Products</h2>
-                <a href="products.html">view all products <i class="fa fa-angle-right"></i></a>
+                <a href="/product">view all products <i class="fa fa-angle-right"></i></a>
               </div>
             </div>
-            {% for pro in page_obj %}
-            <div class="col-md-4">
+            {% for item in page_obj %}
+            <div class="col-lg-4 col-md-4 all dev d-flex" style="height: 400px;">
               <div class="product-item">
-                <a href="#"><img src="{{pro.thumbnail}}" alt=""></a>
+                <a href="{% url 'product:detail' item.id %}"><img src="{{item.thumbnail}}" alt="" style="display:block; width:100%;height: 50%;object-fit: cover;"></a>
                 <div class="down-content">
-                  <a href="#"><h5 class="product_title">{{pro.title}}</h5></a>
-                  <h6>{{pro.sale_price}}</h6>
-                  
+                  <a href="#"><h5 class="product_title">{{item.title}}</h5></a>
+                  <h5>{{item.sale_price}}</h5>
+                
+                  <div >
+                    <a href="javascript:void(0)" name="addCart" class="btn btn-danger w-100" data-id="{{item.id}}"><i class="fas fa-cart-plus"></i>Add To Cart</a>
+                    <!-- <a href="{% url 'product:detail' item.id %}" class="btn btn-danger btn-outline-danger">Xem chi tiết</a> -->
+                  </div>
+                
                   <ul class="stars">
                     <li><i class="fa fa-star"></i></li>
                     <li><i class="fa fa-star"></i></li>
@@ -39,7 +44,7 @@
                     <li><i class="fa fa-star"></i></li>
                     <li><i class="fa fa-star"></i></li>
                   </ul>
-                  <span>Reviews (24)</span>
+                  <span>Reviews (12)</span>
                 </div>
               </div>
             </div>
@@ -71,44 +76,38 @@
             </div>
             </div>
             </div>
-         
+         <div class="row">
+          <div class="col-md-12">
+            <div class="pages">
+              <span class="step-links">
+                <ul class="pages">
+                {% if page_obj.has_previous %}
+                <li>
+                  <a href="?page=1"><i class="fa fa-angle-double-left"></i></a>
+                </li>
+                <li><a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+                {% endif %}
+                  <span class="current">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                  </span>
+          
+                  {% if page_obj.has_next %}
+                      <li>
+                        <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+                      </li>
+                      <li><a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa fa-angle-double-right"></i></a></li>
+                  {% endif %}
+              </span>
+          </div>
+          </div>
+         </div>
           </div>
           
         </div>
       
       </div>
   
-      <!-- <div class="best-features">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="section-heading">
-                <h2>About Sixteen Clothing</h2>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="left-content">
-                <h4>Looking for the best products?</h4>
-                <p><a rel="nofollow" href="https://templatemo.com/tm-546-sixteen-clothing" target="_parent">This template</a> is free to use for your business websites. However, you have no permission to redistribute the downloadable ZIP file on any template collection website. <a rel="nofollow" href="https://templatemo.com/contact">Contact us</a> for more info.</p>
-                <ul class="featured-list">
-                  <li><a href="#">Lorem ipsum dolor sit amet</a></li>
-                  <li><a href="#">Consectetur an adipisicing elit</a></li>
-                  <li><a href="#">It aquecorporis nulla aspernatur</a></li>
-                  <li><a href="#">Corporis, omnis doloremque</a></li>
-                  <li><a href="#">Non cum id reprehenderit</a></li>
-                </ul>
-                <a href="about.html" class="filled-button">Read More</a>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="right-image">
-                <img src="{% static 'assets/images/feature-image.jpg'%}" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-  
+    
   
       <!--Section: Products v.3-->
       {%endblock%}

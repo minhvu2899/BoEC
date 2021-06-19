@@ -61,3 +61,24 @@ div.address_user .name {
     cursor: pointer;
     color: orange;
 }
+.category{
+  padding-top: 20px;
+}
+.subcategory{
+  color:black;
+  padding: 12px;
+  margin: 10px 0;
+}
+
+.credit_card_logo{
+    width: 67px;
+    height: 40px;
+    margin-right: 20px;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,.14);
+    border-radius: 2px;
+    font-weight: 600;
+    display: inline-block;
+}

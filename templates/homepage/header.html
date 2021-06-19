@@ -1,6 +1,6 @@
 <header class="">
 
-  <nav class="navbar navbar-expand-lg ">
+  <nav class="navbar navbar-expand-lg " >
     <div class="container">
       <a class="navbar-brand" href="{% url 'core:index'%}"><h2>Hệ thống <em>BoEC</em></h2></a>
       <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'product:search'%}">
@@ -12,7 +12,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto d-flex align-items-center">
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'core:index'%}">Home
               <span class="sr-only">(current)</span>
@@ -21,13 +21,19 @@
           <li class="nav-item">
             <a class="nav-link" href="/product">Our Products</a>
           </li>
+          {%if user.id is not None %}
           <li class="nav-item">
             <a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i></a>
+          
           </li>
+        
+          {%endif%}
+          {%if user.username == "nvbh" %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'order:manage'%}">đơn hàng</a>
           </li>
-        
+          {%endif%}
+         
           <li class="nav-item">
             {% if user.id is None %}
             <a class="nav-link" href="/account/login"> Login</a>
@@ -38,9 +44,15 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="far fa-user"></i>{{user}}
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-menu bg-info" aria-labelledby="dropdownMenuButton" >
                 <a class="dropdown-item" href="#">{{user.id}}</a>
+                {%if user.username == "nvkho" %}
+               
+                  <a class="dropdown-item" href="{% url 'nhaphang:kho' %}">Quản lí kho</a>
+               
+                {%endif%}
                 <a class="dropdown-item" href="{% url 'user:purchase'%}">Đơn mua</a>
+                <a class="dropdown-item" href="{% url 'user:profile'%}">Profile</a>
                 <a class="dropdown-item" href="{% url 'user:address'%}">Địa chỉ</a>
                 <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
               </div>

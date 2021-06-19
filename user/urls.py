@@ -9,7 +9,10 @@ urlpatterns = [
     path('address/add',Add_Address.as_view(),name="add"),
     path('address/edit/',Edit_Address.as_view(),name="edit"),
     path('address/delete/',Delete_Address.as_view(),name="delete"),
+    path('creditcard/delete/',Delete_CreditCard.as_view(),name="delete_credit"),
     path('address/',AddressView.as_view(),name="address"),
     path('comment/',CommentProduct.as_view(),name="comment"),
+    path('profile/',Profile.as_view(),name="profile"),
+
 
 ]

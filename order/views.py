@@ -5,7 +5,7 @@ from django.views import View
 from cart.models import *
 from .models import *
 from user.models import *
-
+from .models import Payment,Shipping
 
 
 # Create your views here.
@@ -14,19 +14,19 @@ class AddOrder(View):
         if request.user.is_authenticated:
             cart = Cart.objects.get(user=request.user)
             cartItem = cart.cartitem_set.all()
-            total=request.POST.get('total')
+            total =request.POST.get('total')
             shipping_id =request.POST.get('shipping_id')
             payment_id =request.POST.get('payment_id')
-            ship= Shipping.objects.get(pk = shipping_id)
+            shipping_address =request.POST.get('shipping_address')
+        
             pay =Payment.objects.get(pk = payment_id)
-            address_user=Address.objects.get(user= request.user,default=True)
-            shipping_address = address_user.street +',' +  address_user.apartment_number+','+ address_user.district+ ','+address_user.city
+            ship =Shipping.objects.get(pk = shipping_id)
             order =Order.objects.create(user=request.user,cart= cart,shipping_address=shipping_address,ship=ship, paymentMethod=pay,total=total)
-            for item in cartItem:
-                OrderDetail.objects.create(order= order, product= item.item,product_name=item.title, image =item.thumbnail,quantity= item.quantity,price=item.item.sale_price)
-                # HttpResponse(item.item.sale_price)
+            for i in cartItem:
+                OrderDetail.objects.create(order= order, product= i.item,product_name=i.item.title, image =i.item.thumbnail,quantity= i.quantity,price=i.item.sale_price)
+                HttpResponse(i.item.sale_price)
             cart.cartitem_set.all().delete()    
-            return HttpResponse(1)
+            return HttpResponse(pay)
 class GetRatingOrder(View):
     def get(self,request):
         if request.user.is_authenticated:

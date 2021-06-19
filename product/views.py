@@ -1,3 +1,4 @@
+
 from django.shortcuts import redirect, render,HttpResponse
 from django.views import View
 from .models import Category, Product
@@ -14,12 +15,12 @@ class ProductView(View):
        
         
         context['categorys'] = Category.objects.all()
-        product_list = Product.objects.all()
-        paginator = Paginator(product_list, 12) # Show 25 contacts per page.
+        product_list = Product.objects.order_by('?').filter(active=True)
+        paginator = Paginator(product_list, 9) # Show 25 contacts per page.
       
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        
+      
         for item in page_obj:
             item.sale_price ="₫{:,.0f}".format(item.sale_price)
         context['page_obj']= page_obj
@@ -30,9 +31,9 @@ class CategoryView(View):
     def get(seft,request,slug):
         context={}
         c = Category.objects.get(slug=slug)
-        product_list=  c.product_set.all()
+        product_list=  c.product_set.filter(active=True)
         context['categorys'] = Category.objects.all()
-        paginator = Paginator(product_list, 12) # Show 25 contacts per page.
+        paginator = Paginator(product_list, 9) # Show 25 contacts per page.
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         for item in page_obj:
@@ -68,7 +69,7 @@ class SearchProduct(View):
         context={}
         context['categorys'] = Category.objects.all()
         product= Product.objects.filter(title__icontains=text_search)
-        paginator = Paginator(product, 12) # Show 25 contacts per page.
+        paginator = Paginator(product, 9) # Show 25 contacts per page.
        
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)

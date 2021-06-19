@@ -73,7 +73,7 @@ https://templatemo.com/tm-546-sixteen-clothing
   <script src="{% static 'assets/js/slick.js'%}"></script>
   <script src="{% static 'assets/js/isotope.js'%}"></script>
   <script src="{% static 'assets/js/accordions.js'%}"></script>
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
   <script language="text/Javascript">
@@ -122,17 +122,23 @@ https://templatemo.com/tm-546-sixteen-clothing
         console.log(payment_id);
       })
       $('#order').click(function () {
-
+        shipping_address =$('#shipping_address').text()
+       
         $.post("/order/addOrder/",
           {
             shipping_id: shipping_id,
             payment_id: payment_id,
+            shipping_address:shipping_address,
             total: total,
             'csrfmiddlewaretoken': '{{csrf_token}}',
           },
           function (data, status) {
             if (status == 'success') {
-              window.location = "{% url 'user:purchase'%}"
+              
+              setTimeout( async () => {
+                await swal("Đặt hàng thành công!", "Thank you!", "success");
+                window.location = "{% url 'user:purchase'%}"
+              }, 1000);
             }
           });
       })
@@ -153,9 +159,16 @@ https://templatemo.com/tm-546-sixteen-clothing
             'csrfmiddlewaretoken': '{{csrf_token}}',
           },
           function (data, status) {
-            if (status == 'success') {
-              alert("Thêm vào giỏ hàng thành công!");
-              
+            if (data == 'login') {
+           
+              setTimeout(async() => {
+                await swal("Vui lòng đăng nhập!", "Thank you!", "error");
+                window.location = "{% url 'account:login'%}"
+              }, 1000);
+            }
+            else{
+              // alert("Thêm vào giỏ hàng thành công!");
+              swal("Good job!", "Thêm vào giỏ hàng thành công", "success");
             }
           });
       })
@@ -243,6 +256,7 @@ https://templatemo.com/tm-546-sixteen-clothing
         e.preventDefault();
         alert($(this).data('id'))
       })
+      
       //Address
       var btn_default_address = $('button[name="btn-default-address"]');
       btn_default_address.click(function () {
@@ -254,7 +268,7 @@ https://templatemo.com/tm-546-sixteen-clothing
           },
           function (data, status) {
             if (status == 'success') {
-              alert("Thay doi thanh cong!");
+              swal("Good job!", "Thay đổi thành công!", "success");
               location.reload();
             }
           });
@@ -282,7 +296,7 @@ https://templatemo.com/tm-546-sixteen-clothing
             },
             function (data, status) {
               if (status == 'success') {
-                alert("Thay doi thanh cong!");
+                swal("Good job!", "Thêm thành công!", "success");
                 location.reload();
               }
             });
@@ -338,7 +352,19 @@ https://templatemo.com/tm-546-sixteen-clothing
         })
 
       })
-      //Xóa address
+      //change address
+      $('#selected_address').hide();
+      $('#btn_change_address').click(function () {
+      
+        $('#selected_address').show();
+        $('#confirm_address').click(function () {
+          var address=$('input[name="selected_address"]:checked').val();
+          
+          $('#selected_address').hide();
+
+          $('#shipping_address').html(address)
+        })
+      })
      
       $('#comment_product').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
@@ -348,15 +374,15 @@ https://templatemo.com/tm-546-sixteen-clothing
         var title= button.data('title');
         var id_order= button.data('order')
         console.log(img);
-        
+      
         var html=`
                 <div class="row m-3 p-3 border text-center">
                 <div class="col-md-3">
                        
-                  <img class="product-img-small" src="${img}" alt="">
+                  <a href="/product/detail/${id_product}/"><img class="product-img-small" src="${img}" alt=""></a>
                 </div>
                   <div class="col-md-9 mb-3">
-                    <span class="product_title">${title}</span>
+                    <a href="/product/detail/${id_product}/"><span class="product_title">${title}</span></a>
                   </div>
                 </div>
                   <div class="row">
@@ -372,7 +398,7 @@ https://templatemo.com/tm-546-sixteen-clothing
                         <label for="">Comment</label>
                         <textarea class="form-control comment"  id="" rows="3"></textarea>
                       </div>
-                      <button type="submit" id="comment">submit</button>
+                      <button type="submit" id="comment" class="btn btn-danger">Đánh giá</button>
                     </div>
                   </div>
                  
@@ -422,7 +448,7 @@ https://templatemo.com/tm-546-sixteen-clothing
               },
               function (data, status) {
                 if (status == 'success') {
-                  alert("Đánh giá thành công");
+                swal("Good job!", "Đánh giá thành công!", "success");
                  location.reload()
                 
                 }
@@ -517,7 +543,7 @@ https://templatemo.com/tm-546-sixteen-clothing
         modal.find('.modal-title').text('Đánh giá order ' + recipient)
 
       });
-
+     
     })
 
   </script>

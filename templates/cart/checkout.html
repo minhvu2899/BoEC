@@ -18,13 +18,25 @@
                             <strong>{{user.phone_number}}</strong>
                         </div>
                         <div class="col-md-7">
-                            <p class="address" name="address">{{address}}</p>
+                            <p class="address " id="shipping_address">{{address}}</p>
                         </div>
                         <div class="col-md-2 text-center">
-                            <button>Thay đổi</button>
+                            <button id="btn_change_address">Thay đổi</button>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-12" id="selected_address">
+                {% for add in listAddress%}
+                <div class="form-check">
+                    <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="selected_address" id="" value=" {{add.address}}" checked>
+                    {{add.address}}
+                  </label>
+                </div>
+                {%endfor%}
+               
+                <button type="button" class="btn btn-success" id="confirm_address">Hoàn thành</button>
             </div>
         </div>
         <div class="row m-3 p-3 text-center">

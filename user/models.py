@@ -6,6 +6,7 @@ from django.db.models.deletion import CASCADE
 
 
 
+    
 class CustomerUser(AbstractUser):
     phone_number =models.CharField(default='',max_length=15)
 class Address(models.Model):
@@ -26,5 +27,3 @@ class Comment(models.Model):
     order_id = models.IntegerField(default=0)
     create_at =models.DateTimeField(auto_now_add=True)
 
-    
-   
